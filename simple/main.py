@@ -3,7 +3,7 @@ from ortools.sat.python import cp_model
 Let's start with a simple example problem in which there are:
 
     Three variables, x, y, and z, each of which can take on the values: 0, 1, or 2.
-    constraints: x ≠ y; x ≠ y ≠ z.
+    constraints: x ≠ y ≠ z.
 """
 
 def print_solution(solver, status, domain, all_states, accepted_states):
@@ -32,7 +32,6 @@ def cp_program():
     }
 
     # add a constraint
-    model.Add(domain['x'] != domain['y'])
     model.AddAllDifferent([var for _,var in domain.items()])
 
     # create a solver and apply it to the model defined earlier
