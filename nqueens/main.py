@@ -9,13 +9,11 @@ def print_solution(solver, status, domain, all_states, accepted_states):
     for name, value in all_states.items():
         print(f'{name} = {value}')
 
-
     print(f'#=== Solver ===#\n')
     print(f'status = {status}')
     if status in accepted_states:
         for name, var in domain.items():
             print(f'{name} = {solver.Value(var)}')
-
 
 def cp_nqueens(num_queens):
     # creates the model
@@ -24,12 +22,10 @@ def cp_nqueens(num_queens):
     # initialize the domain
     domain = {}
 
-
     # assuming queen(i) is positioned on row i, column is now the unknown
     for i in range(num_queens):
         var_name = "q" + str(i)
         domain[var_name] = model.NewIntVar(0, num_queens - 1, var_name)
-
 
     # add constraints
     for i in range(num_queens):
@@ -41,7 +37,6 @@ def cp_nqueens(num_queens):
             var1_name = "q" + str(i)
             var2_name = "q" + str(j)
             model.Add(domain[var1_name] != domain[var2_name])
-
 
             # queens must not be diagonal to each other
             offset = j - i
