@@ -59,8 +59,8 @@ def cp_nqueens(num_queens):
 
 if __name__ == "__main__":
     try:
-        arg1 = sys.argv[1]
-        cp_nqueens(int(arg1))
+        num_queens = int(sys.argv[1])
+        cp_nqueens(num_queens)
     except:
         print("usage: python main.py <q>, in which q is the number of queens")
         sys.exit(1)
