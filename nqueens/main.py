@@ -1,9 +1,7 @@
 from ortools.sat.python import cp_model
+import sys
 """
-Let's start with a simple example problem in which there are:
-
-    Three variables, x, y, and z, each of which can take on the values: 0, 1, or 2.
-    constraints: x ≠ y ≠ z.
+-> How can N queens be placed on an NxN chessboard so that no two of them attack each other?
 """
 
 def print_solution(solver, status, domain, all_states, accepted_states):
@@ -65,4 +63,9 @@ def cp_nqueens(num_queens):
     print_solution(solver, status, domain,  all_states, accepted_states)
 
 if __name__ == "__main__":
-    cp_nqueens(4)
+    try:
+        arg1 = sys.argv[1]
+        cp_nqueens(int(arg1))
+    except:
+        print("usage: python main.py <q>, in which q is the number of queens")
+        sys.exit(1)
