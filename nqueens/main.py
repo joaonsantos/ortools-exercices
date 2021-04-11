@@ -4,6 +4,7 @@ import sys
 -> How can N queens be placed on an NxN chessboard so that no two of them attack each other?
 """
 
+
 def print_solution(solver, status, domain, all_states, accepted_states):
     print(f'#=== Possible states ===#\n')
     for name, value in all_states.items():
@@ -14,6 +15,7 @@ def print_solution(solver, status, domain, all_states, accepted_states):
     if status in accepted_states:
         for name, var in domain.items():
             print(f'{name} = {solver.Value(var)}')
+
 
 def cp_nqueens(num_queens):
     # creates the model
@@ -55,7 +57,8 @@ def cp_nqueens(num_queens):
         "optimal": cp_model.OPTIMAL
     }
     accepted_states = [cp_model.OPTIMAL, cp_model.FEASIBLE]
-    print_solution(solver, status, domain,  all_states, accepted_states)
+    print_solution(solver, status, domain, all_states, accepted_states)
+
 
 if __name__ == "__main__":
     try:
