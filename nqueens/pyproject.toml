@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "nqueens"
+version = "1.0.0"
+description = "\"nqueens tutorial\""
+authors = ["João Santos <joaopns05@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+ortools = "^8.2.8710"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
