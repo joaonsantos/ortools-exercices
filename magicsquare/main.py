@@ -46,49 +46,69 @@ def cp_msquare(order):
     # all entries must be different
     model.AddAllDifferent([var for _, var in domain.items()])
 
-    # create list of column variable sums
-    column_constraints = []
-    column_constraints_names = []
-    for i in range(order):
-        column_vars = []
-        column_vars_names = []
-        for j in range(order):
-            var_name = "n%s%s" % (str(i), str(j))
-            column_vars.append(domain[var_name])
-            column_vars_names.append(var_name)
-
-        column_constraints.append(sum(column_vars))
-        column_constraints_names.append([column_vars_names])
-
-    # debug
-    # print(f'column constraints {column_constraints_names}')
-
     # create list of line variable sums
-    line_constraints = []
-    line_constraints_names = []
-    for j in range(order):
+    line_sum_vars = []
+    line_sum_var_names = []
+    for i in range(order):
         line_vars = []
-        line_vars_names = []
-        for i in range(order):
+        line_var_names = []
+        for j in range(order):
             var_name = "n%s%s" % (str(i), str(j))
             line_vars.append(domain[var_name])
-            line_vars_names.append(var_name)
+            line_var_names.append(var_name)
 
-        line_constraints.append(sum(line_vars))
-        line_constraints_names.append([line_vars_names])
+        line_sum_vars.append(sum(line_vars))
+        line_sum_var_names.append([line_var_names])
 
     # debug
-    # print(f'line constraints: {line_constraints_names}')
+    # print(f'line constraints {line_constraints_names}')
 
-    # enforce equality among all lines and equality among all columns
-    # as well as equality among all lines and columns
+    # create list of column variable sums
+    column_sum_vars = []
+    column_sum_names = []
+    for j in range(order):
+        column_vars = []
+        column_var_names = []
+        for i in range(order):
+            var_name = "n%s%s" % (str(i), str(j))
+            column_vars.append(domain[var_name])
+            column_var_names.append(var_name)
+
+        column_sum_vars.append(sum(column_vars))
+        column_sum_names.append([column_var_names])
+
+    # debug
+    # print(f'column constraints: {column_constraints_names}')
+
+    # sum must also be the same as the column and line sum in the main diagonals
+    main_diagonal_vars = []
+    main_diagonal_vars_names = []
+
+    anti_diagonal_vars = []
+    anti_diagonal_vars_names = []
     for i in range(order):
         for j in range(order):
-            model.Add(column_constraints[i] == column_constraints[j])
-            model.Add(line_constraints[i] == line_constraints[j])
-            model.Add(line_constraints[i] == column_constraints[j])
+            if i == j:
+                var_name = "n%s%s" % (str(i), str(j))
+                main_diagonal_vars.append(domain[var_name])
+                main_diagonal_vars_names.append(var_name)
 
-    # TODO sum must also be the same as the column and line sum in the main diagonals
+            if j == ((order-1) - i):
+                var_name = "n%s%s" % (str(i), str(j))
+                anti_diagonal_vars.append(domain[var_name])
+                anti_diagonal_vars_names.append(var_name)
+
+
+    main_diagonal_sum = sum(main_diagonal_vars)
+    anti_diagonal_sum = sum(anti_diagonal_vars)
+
+    # enforce equality among all lines and equality among all columns
+    # as well as equality among all lines and columns and main diagonals
+    for i in range(order):
+        for j in range(order):
+            model.Add(column_sum_vars[i] == column_sum_vars[j])
+            model.Add(line_sum_vars[i] == line_sum_vars[j])
+            model.Add(line_sum_vars[i] == column_sum_vars[j] == main_diagonal_sum == anti_diagonal_sum)
 
     # create a solver and apply it to the model defined earlier
     solver = cp_model.CpSolver()
