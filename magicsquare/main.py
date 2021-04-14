@@ -108,7 +108,10 @@ def cp_msquare(order):
         for j in range(order):
             model.Add(column_sum_vars[i] == column_sum_vars[j])
             model.Add(line_sum_vars[i] == line_sum_vars[j])
-            model.Add(line_sum_vars[i] == column_sum_vars[j] == main_diagonal_sum == anti_diagonal_sum)
+            model.Add(line_sum_vars[i] == column_sum_vars[j])
+
+        model.Add(line_sum_vars[i] == main_diagonal_sum)
+        model.Add(column_sum_vars[i] == anti_diagonal_sum)
 
     # create a solver and apply it to the model defined earlier
     solver = cp_model.CpSolver()
